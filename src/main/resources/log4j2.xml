@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
+<Configuration status="debug" strict="true" name="XMLConfigTest"
+               packages="org.apache.logging.log4j.test">
+    <Properties>
+    </Properties>
+    <Filter type="ThresholdFilter" level="trace"/>
+
     <Appenders>
-        <File name="A1" fileName="c:\\test\\app.log" append="true">
+        <Appender type="Console" name="STDOUT">
+            <Layout type="PatternLayout" pattern="%m MDC%X%n"/>
+            <Filters>
+                <Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
+            </Filters>
+        </Appender>
+        <Appender type="Console" name="FLOW">
+            <Layout type="PatternLayout" pattern="%C{1}.%M %m %ex%n"/><!-- class and line number -->
+            <Filters>
+                <Filter type="MarkerFilter" marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Appender>
+        <File name="A1" fileName="c:\\testnew\\appoo.log" append="true">
             <PatternLayout pattern="%t %-5p %c{2} - %m%n"/>
         </File>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
         </Console>
     </Appenders>
+
     <Loggers>
         <Logger name="org.apache.log4j.xml" level="debug">
             <AppenderRef ref="A1"/>
@@ -17,4 +37,6 @@
             <AppenderRef ref="A1"/>
         </Root>
     </Loggers>
+
+
 </Configuration>
